@@ -1,0 +1,39 @@
+Elementist class concept
+
+"Everything consists of Four Elements... Your Flesh is Earth. Your Breath is Air. Your Blood is Water. Your Soul... is a Fire"
+
+FI,WA,AI,ER is a basic elements of everything. The most common elements for it is a FIRE WATER AIR and EARTH.
+
+Every creature has its elementals constitution. It is showed on it's iternal PRED profile. But be warriorfull, weapons or armor does'not changes the inner constitution, but changes outer chars.
+
+POWER - FIRE
+RATE - AIR
+EVASION - WATER
+HEALTH - EARTH
+
+Element places:
+1)You Y
+2)Creatures C
+3)Environment E
+
+You can:
+1)Call elements from environment E->Y
+2)Blast them et enemies Y->E
+3)Throw concentrated elemental bolt Y->C
+4)Leak elementals from enemies C->Y
+
+By leaking most valuable element of enemy you makes him helpless shiteater.
+Firehund without fire can  to much attack you
+
+BOLT - basic arrow-like cast, dealing dmg to one enemy. 
+{ELEMENT}BOLT{TARGET}
+
+Effectivity of BOLT based on a)Resistances of enemy b)Enviroment Resourses e.g. near the lake a lot of water. On the plain you can get a lot of fire from the sunlight c)Your spirit energy. You can cast more elemental energy to you first, and than strike.
+
+INFUSE - grants power of element to creature, baffing it and changing it resistance. INFUSE changes the stats of target, basing on nature of element used. Other chars are making less.
+
+VOW - you catches spirits of elected elemency, and they come to you from outside.
+
+Instead of Powerword you can directly use prime Elements (FIBOLGA), but using a powerwords is much more effective.
+
+The Powerword for Elementist is an Element - some sort of elementals structure, what consists of different amount of basic elements. The strength of Elementist hides in correctly using the correct cast on correct elements.

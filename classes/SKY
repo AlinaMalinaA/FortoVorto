@@ -1,0 +1,11 @@
+Skiencist class Conception
+
+Skiencist uses Potions (on himself) or Grenades(on his enemies).
+In base he uses sime amount of reactives (Let's say, five - red, blue, yellow, green and black) and so he must carefully combine it reactives to achieve effectivity.
+
+POISON - (P) makes enemy lose his HP (P) Heals your DOT or other bad status(or make poisoned)
+ACID - (G) damage to enemy ignoring his sucessful evasing.
+REGEN - (P) makes you regain your health with a time.
+EXPLOSION - (G) damage to enemy with part to enemies arounf him (P) Makes explosing of blood making you act faster.(Or explode in hands, or make you lose the turn completely)
+STEROID - (P) raises R,D,E of Skien. overdose makes him lose parameters instead.
+SMOKE - (G) lowers accuracy of enemies. Overdose makes you become blind.

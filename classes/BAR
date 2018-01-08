@@ -1,0 +1,54 @@
+Barbaro class conception.
+
+Barbaro is a warrior class. He uses VOICE to become more powerfull himself, or to make his enemies run away.
+His voice can be targetet at:
+
+1)Enemy : Battlecry
+2)Sky : Warrior's pray - makes instant effect, or adds a status to barbaro
+3)Enemy, while striking him: Shoutstrike
+
+example synsets:
+
+SANGRO (Blood)
+  BC: Loud attack at enemy, that makes his wounds to open wider (increases bleedrate of enemy).
+  WP: Blood Bath - Barbaro regains health for every bleeding warrior.
+  SS: Attack an enemy, making him bleed. Bleedrate is based on the most powerfull strike of Barbaro.
+
+FREQ (Critical)
+  BC: Makes his enemies to have a chance to deal less damage with their attacks
+  WP: Barbaro prepares the BATTLELEAP - the strike with minimizied rate, but always critical.
+  SS: Attacks an enemy, having chance to deal more damage, than usuall
+
+SUFERO (PUNISHMENT)
+  WP: Increases damage of Barbaro for next strike everytime he loses helth during the turn
+  
+VENTO (STORMWIND)
+  SS: Attack  multiply enemies across the battlefield with raised rate
+
+BATTLEPRICE 
+  SS: Attack with increased damage, paying with blood.
+
+FEAR
+  BC: Makes enemies of Barbaro chance to lose their turn or runaway from battlefield
+
+RETRIBUTION
+  BC: Deals damage, Based on health, losed by barbaro.
+
+SACRIFICE
+  WP: Barbaro makes an open wound on himself and gains extra rage
+
+Easy mode allows Barbaro to make casts like this:
+
+{WORD}TAR to SS
+{WORD} to WP
+{WORD}ATAR to BC
+
+In hard mode Barbaro is allowed to write INSTINCTS - powerfull modules, describing barbaro's reaction to every action of bicho.
+
+Barbaro Difficulty Conception:
+1)Each Cry has it's pitch: high, low, or middle. To be effective, Barbaro must very clever use his shouts, or he has a chance to lose his voice. Example:
+MIDDLE -> LOW = GOOD, MIDDLE -> HIGH = GOOD, HIGH -> MIDDLE = GOOD, LOW -> MIDDLE = GOOD
+MIDDLE -> MIDDLE = NOT GOOD, LOW -> HIGH = NOT GOOD, HIGH -> LOW = NOT GOOD
+LOW -> LOW = BAD, HIGH -> HIGH = BAD
+
+2)Resource for Barbaro's casts is RAGE. The rage must be above 0 to make Barbaro strike smbdy, and also must be belove than (100?) Because if rage overcomes 100, BARBARO becomes unctrollable and strikes his enemies as he wants.
