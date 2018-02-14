@@ -11,7 +11,7 @@ example synsets:
 
 SANGRO (Blood)
   BC: Loud attack at enemy, that makes his wounds to open wider (increases bleedrate of enemy).
-  WP: Blood Bath - Barbaro regains health for every bleeding warrior.
+  WP: Blood Bath - Barbaro regains health for every bleeding unit on battlefield. Amount based on bleedrate and count.
   SS: Attack an enemy, making him bleed. Bleedrate is based on the most powerfull strike of Barbaro.
 
 FREQ (Critical)

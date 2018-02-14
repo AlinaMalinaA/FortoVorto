@@ -1,0 +1,83 @@
+La batalo estas umo inter batalantoj. Do. Cxiu batalantaro havas gxia kampo tri po tri celoj.
+
+###
+###
+###
+
+Unumomente unu batalkampo povas batali kun kvar aliaj batlkampoj:
+
+  #
+  -
+#-#-#
+  -
+  #
+
+Charoj havas 4 plejgravaj Charoj:
+1)Power
+2)Rate
+3)Evasion
+4)Durablity
+
+Attack = Power*Rate
+Vitality = Defence*Endurance
+
+(Power - Rate - Endurance - Defence)
+
+Power - how strong you can make punishment throw main acion of ya hero. Ekzemple - For Barbaro it is the Muscles potence, for Elementalist his Elemental control.
+Rate - How many strikes you can more supposelt do.
+Evasion - How often U can decrease Punishment from enemystrike.
+Durablity - Hom many Punishment you can Endure
+
+Cxiu povas havi Armoron kaj Militilon
+Militilo Havas:
+Accuratio - Kiel bone estas sukcese cele bati vian mamikon
+Rapido - Aro de pointoj, vi bezonas doni de via AP por sukcese ataki unue.
+AP: Kiel bone Militilo traas Armoro
+Naturo: Per kiaj elementoj militilo atakas.
+Ekzemple:
+Elementalisto uzas kvar elementojn - Fire, Water, Earth, Sky. His weapons is stuffs and rods, that also infused by this elements in different porportions. Earth Elemento estas Fizika elemento, ekzemple.
+Barbaro povas uzi tri fizikaj elemontoj - trancxo, trao, rompo, kaj vokalo - Spirita Elemento.
+Skiencisto povas uzi fizikon, elektron, kemion, biologion
+PM(Power modifier) = R/A - Modifier of Power. (to not make 10 blows with 100 chance with full power - it's stupid.)
+HIGH ACC, HIGH RATE - 100,100: Very excellent and strong weapon. Crossbow.(One strike with 100%chance. AP: Medium)
+HIGH ACC, LOW RATE - 100,50: Not so strong, but very quick weapon. Knife. (Two strikes with 100%. AP - Low (0.5x))
+LOW ACC, HIGH RATE - 50, 100: Heavy magnificient weapon. Hammer. (one strike with 50% chance, AP -High(2x))
+LOW ACC, LOW RATE - 50, 50: shitty weapon with high anount of strikes, Example: Shotgun. (two shots with 50%, AP - medium)
+We can think, what the many-strike weapon have no point, cause why i want small-AP weapon, if i can take a high-AP weapon to make my enemies cry? The point is, the additional damage of small weapons is more good, than a ad of a good weapon. So, feeble weapon is more excellent to destroy armorless enemies!
+Armoro havas:
+EVADO.
+EVADCHANCO (EC)
+EVADPOTENCO (EP)
+DC - Dodge chance. Chance after each attack half the incoming damage.
+If DC is more than 100, Than make halving, and decrease DC by 100. repeat.
+DC represents how often you can sucesfully decrease damage.
+DC = EP/EC
+Also can be four variants:
+HIGH EC, HIGH EP - 100%,100%: Good and stabile Heavy Armor. AV-Medium, DC - medium
+HIGH EC, LOW EP: jumping, dodging. Extra light armor, or even nude. AV- low.
+LOW EC, HIGH EP: Unstable, but very powerfull Chaos Armor. AV-HIGH, 
+LOW EC, LOW EP: Not so stable, as Heavy, but instead more quick Medium Armor. AV-Medium, 
+
+Defencetipo:
+1)Unufoja - ne reigxas, sed plejgranda
+2)Plufoja - reigxas cxiuturne.
+3)Senfina - plejmalmulta, sed afektas por cxiu strajko.
+Kiel atakas armorulon, AV estas decresita per AP de militilo.
+
+Defaulta Armoro estas Senfina armoro.
+
+Se vi(maldekstre) atakas fiendon(dekstre) vi povas esti en unu el tri rouoj:
+
+BMF
+BMF
+BMF
+
+se vi estas en F-a linio, vi havas vian RATE duobita, kaj via DEFENSE duonoblita.
+Se vi en B-a linio, vi-a RATE duonoblita, kaj via DEFENSE duoblita. Sciu tio, kaj ne forgesu. Do, se vi atakas viajn fiendojn en bako, vi povas tre efektive penetri eliajn arsojn.
+
+Militiloj povas havi specialajn profilojn, Ekzemple:
+
+M-2: Tio signifas, ke atakante de M vi ankau havas duoblan atakaon. Defaulto Profilo Estas:
+
+0.5/1/2-0.5/1/2. Tio povas esti alie.
+

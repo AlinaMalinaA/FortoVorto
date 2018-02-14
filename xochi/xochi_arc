@@ -1,0 +1,155 @@
+Xochiyaoyotl Architecture
+
+Konzepto: 
+Estas du fieldoj
+
+1) Fari batalon de du homoj
+2) Fari batalon de nay kontrau nau personoj
+3) Fari batalon de celloj.
+
+1)Estas charo 1
+2)Estas charo 2
+3)Estas linio da hodajxo (20x)
+4)Estas Efekto: Ia okazintajxo
+5)Estas Statuso: Ia passivo dreko, kiu povas fari efektojn.
+
+
+Turnlinio:
+Estas ciklita listo[20].
+Cxiu elemento estas ankau listo kaj enhavas:
+Cxaro, se estas turno de cxaro
+Effekto, se estas turno de efekto
+
+Ciklilo:
+for i = 0 .. 20 - chkigxas i-a cello te turnlinio.
+Farigxas efektoj (se efekto)
+Agas persono(se de persono)
+
+Efekt_sistemo.
+
+simpla modelo.
+ 
+en Queue estas Turnoj.
+cxiu ago havas efekton.
+ekzemple:
+ago - ataki miston
+efekti - perdi hp-n de morto.
+cxiuj igoj igas efektojn en komenco de sekva queueturno.
+
+estas listoj da eventoj:
+Globala turnkomenca listo
+Globala turnfina listo
+Globala plenturnkomenca listo
+Globala plenturnfina listo
+Globala batlakomenca listo
+Globala batalfina listo.
+
+Kiam estas tempo, listo estas kontralata por igoj, kiuj povas farigxi, jo.
+
+Statuso - iu passiva dreko. Povas:
+
+Fiksi paroj da charo(P+, H-) au de Armoro, au de Weapono.
+Statuso povas aldoni evento en eventlisto. 
+Eventoj havas TTL - kiom da fojoj ili povas agi.
+
+Ekzempo:Bleeding.
+Bleeding estas efekto, kiu igas vin perdi hp-n en komenco de via turno.
+Do, kiam iu misto faras al vi sangan vundon:
+En via "turnkomenco" listo aldonigxas "Perdo da H" evento kun iU TTL
+En via statusoj aldonigxas "Bleeding" statuso.
+
+Kiel fari sangan vundon?
+Vi elektas agon.
+agojn povas havi diferencan efektojn.
+Plejsimpla ago estas atako.
+
+AGOJ:
+ 
+ATAKO: (KIAM UNUULO ATAKAS DUULON)
+SKVARATAKO (KIAM UNUULO ATAKAS PECO DE CELO)
+CELATAKO (KIAM UNUULO ATAKAS CELON)
+MEMAGO (KIAM UNUULO ATAKAS LIN MEM)
+KOMPLIKO (IU ARO DE SIMPLAJ AGOJ)
+
+AGO(Ulo, Dlo)
+Atako
+Faro da statuso
+alia(ne atako) chango de h
+
+Evento
+Subjekto
+Objekto
+
+Atako ankau havas listojn da agoj. Kiel atako daurigas:
+1)
+Komenco de Atako [Komenca strajko - Kiam vi atakas...]
+Kalkulado de Strajkoj kaj de Akuratio de cxiu strajko
+Unua strajko igigxas [strajka - Kiam vi strajkas...][Kiam misto strajkas vin...]
+Se sukcese: [Kiam vi sukcese strajkas...][kiam mistosukcese strajkas vin...]
+  Misto kalkulas de dodgoj kaj akuratio de cxiu...[
+  Unua evado![Kiam misto evadas...][Kiam vi evadas...]
+   Se sukcese: [Kiam misto sukcese evadas...][Kiam vi sukcese evadas...]
+   Chanco de duoni damagon per dodgo:
+alie: [Kiam vi malsukcese strajkas...][Kiam misto ne sukcesis strjki vin...]
+dua, tria, na strajko.
+Fino de atako [Post atako....]
+  
+
+atako: La plej kora ago.
+
+
+Ekzemplo de laboro. Du charoj:
+
+1.get_next - batal_komenco. - check [batalkomenco_list]
+  get_next - plen_turn_komenco - check [plen_turn_komenco]
+  get_next - turn_komenco(1) - check [turnkomenco]; check [turnkomenco[1]]
+  get_next - barbaro
+    barbaro - ago  (SANGATAKO)
+  get_next - skiencist
+    skiencisto - ago (FRIZARROW)
+  get_next - sangatako.agi()
+
+sangatako(ago):
+  atako
+  analizo de statistiko
+  aldono de bleeding statuso
+  aldono de ago (hp-) en turnkomenco[1],ttl = x
+  aldono de ago (hp-) en fino de turno.
+
+  get next - frizzarrow.agi()
+
+frizzarow(agi):
+  atako
+  analizo de statistiko
+  aldono de ago (hp-) en fino de turno.
+  aldono de statuso (slowita)
+  alodono de ago (initiativo-) en fino de turno
+
+hp- de skiencisto
+hp- de barbaro
+initiativo- de barbaro
+get next - fino de turno!
+turno[cur+initiativo%20] = barbaro
+turno[cur+initiatibo%20] = skiencisto.
+
+getnext - nextturno.... k.t.p.
+
+Ni vidas tie,ke, efektive, ni ne bezonas fari diferencajn clasojn por diferencajn agojn! Ekzemple, se ni volas memsanga-mistsanga atako ni:
+
+rez = atako()
+for modo en modoj modo(rez)
+
+kompliko ago konsistas el plu ol unu ago.
+
+
+ago enhavas propran queue.
+
+Rezulto de Parsero - konstrui Ago kun bona parsero
+subagoj povas depeni de rezulto de aliaj ago.
+CXIU SUB AGO DEVAS FARI STATISTIKON!
+ekzemple:
+BARFARSTRIKE - Memsangsangatako (Barbaro per lia sango plimultas P kaj faras sangvundon)
+Create Ago(MemSang,atako,mistsango(1))
+stat[0]MemSANG: H-, current P+    
+stat[1] = atako - jan jendmn aedenjk 
+stat[2] = mistsang -  get rezult de stat[1] kaj analize it.

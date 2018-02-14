@@ -1,11 +1,31 @@
 Skiencist class Conception
 
-Skiencist uses Potions (on himself) or Grenades(on his enemies).
-In base he uses sime amount of reactives (Let's say, five - red, blue, yellow, green and black) and so he must carefully combine it reactives to achieve effectivity.
+Elementoj de Skiencisto:
+ACIDO (CHEMICAL PUNISHMENT)
+ELECTRICITY (ELECTRICAL PUNISHMENT)
+MECHANICAL (PHYSICAL PUNISHMENT)
+VIRUSO (BIOLOGIKAL PUNISHMENT)
 
-POISON - (P) makes enemy lose his HP (P) Heals your DOT or other bad status(or make poisoned)
+Skiencist uses Potions (on himself) or Grenades(on his enemies).
+In base he uses sime amount of reactives (Let's say, six - red, blue, yellow, green, black and white) and so he must carefully combine it reactives to achieve effectivity.
+
+POISON - (G) makes enemy lose his HP (P) Heals your DOT or other bad status(or make poisoned)
 ACID - (G) damage to enemy ignoring his sucessful evasing.
 REGEN - (P) makes you regain your health with a time.
 EXPLOSION - (G) damage to enemy with part to enemies arounf him (P) Makes explosing of blood making you act faster.(Or explode in hands, or make you lose the turn completely)
 STEROID - (P) raises R,D,E of Skien. overdose makes him lose parameters instead.
 SMOKE - (G) lowers accuracy of enemies. Overdose makes you become blind.
+
+How everything works:
+Like an elementist, The constitution of you, of your enemies and of environment is not a shit.
+Every act have its average parameters in neutral environment, ex 1 Re, 2 Blu, 1 Ye. But! Some sort of shit of env or enemisis makes it work shitier.
+
+ENV pars:
+WET: NORMAL - HIGH - EXTRA HIGH - LOW - EXTRALOW
+TEMP: NORMAL - HIGH - EXTRA HIGH - LOW - EXTRALOW
+PRESS: NORMAL - HIGH - EXTRA HIGH - LOW - EXTRALOW
+
+Every reactive can raise on of par, or lower it. Task - make environment be normal.
+
+CHAR pars:
+META: NORMAL - HIGH - EXTRA HIGH - LOW - EXTRALOW
