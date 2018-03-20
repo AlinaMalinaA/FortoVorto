@@ -1,281 +1,13 @@
 #!/usr/bin/python3
 #coding=utf-8
 
-import queue
-from random import randint as rand
+#from random import randint as rand
 
-class Char():
-  """Common PRED profile for character"""
+from cell import *
+from charo import *
+from bqueue import *
+from nomgen import *
 
-  def __init__(self,randum = 0):
-    self.P = 100 #Power, ability to inflict damage
-    self.R = 100 #Rate, ablity to make multiple strikes
-    self.E = 100 #Endurance, ability to suffer, max Health
-    self.D = 100 #Defence, ability to block shit
-    self.H = 100 #Health, current Endurance potence
-    self.Name = 'Sennoma'   #Tis Warruir hath no name
-    self.I = 20             #Initiative
-    self.armor = Armor()    #Armor of a Warrior
-    self.weapon = Weapon()  #Weapon of Warrior
-    
-    self.mods = []          #Listo de modificacion
-
-    self.statusoj = []      #Listo de Statusoj de Warrior
-
-    self.pos_x = 0  #X Cord in a Cell
-    self.pos_y = 0  #Y Cord in a Cell
-    self.cell = None
- 
-    if randum > 0:
-      a_part = rand(25, 75) * randum // 100
-      v_part = randum - a_part
-      r_part = rand(0, 50) * a_part // 100
-      p_part = a_part - r_part
-      d_part = rand(0, 50) * v_part // 100
-      e_part = v_part - d_part
-      self.R = self.c_par(0,r_part)[0]
-      self.P = int(self.c_par(0,r_part)[1])+p_part
-      self.D = self.c_par(0,d_part)[0]
-      self.E = int(self.c_par(0,d_part)[1])+e_part
-      self.H = self.E
-
-  def get_pts(self,val):
-    if val <= 100:
-      return val
-    return val*val/100 - val + 100
-
-  def get_dpts(self,base,val):
-    if val <= 100:
-      return val-base
-    return self.get_pts(val) - self.get_pts(base)
-
-  def c_par(self,base,amount):
-    ret = [0,0]
-    next = base+1
-    while self.get_dpts(base, next) <= amount:
-      next+=1
-      ret[0]+=1
-    ret[1] = round(amount - self.get_dpts(base, next-1),2)
-    return ret
-
-
-  def modu(self, parnam, parval):
-    for mod in self.mods:
-      if mod['TYPE'] == parnam+'_MUL':
-        parval*= mod['VAL']
-      if mod['TYPE'] == parnam+'_ADD':
-        parval+= mod['VAL']
-      if mod['TYPE'] == parnam+'_SET':
-        parval = mod['VAL']
-    return int(parval)
-
-  def getA(self):
-    """Attack: Ability attack potential of a char"""
-    return self.P*self.R
-
-  def getV(self):
-    """Vitality: Ability to overcome damage"""
-    return self.E*self.D
-  
-
-  def getH(self):
-    """return H, even if it's modificated, like a shit!"""
-    return self.modu('H',self.H)
-
-  def getE(self):
-    """return E, even if it's modificated, like a shit!"""
-    return self.modu('E',self.E)
-
-  def getP(self):
-    """return P, even if it's modificated, like a shit!"""
-    return self.modu('P',self.P)
-
-  def getR(self):
-    """return R, even if it's modificated, like a shit!"""
-    return self.modu('R',self.R)
-
-  def getD(self):
-    """return D, even if it's modificated, like a shit!"""
-    return self.modu('D',self.D)
-
-  def getI(self):
-    """return I, even if it's modificated, like a shit!"""
-    return self.modu('I',self.I)
-
-  def getStrikes(self):
-    R = self.getR()
-    if R % self.weapon.AR==0:
-      return R // self.weapon.AR
-    return R // self.weapon.AR + 1
-  
-  def getS_Chance(self):
-    R = self.getR()
-    if R % self.weapon.AR==0:
-      return self.weapon.AC
-    return (self.weapon.AC*(self.getStrikes()-1) + self.weapon.AC * ((R % self.weapon.AR) / self.weapon.AR)) // self.getStrikes()
-
-  def getDodges(self):
-    D = self.getD()
-    if D % self.armor.DP==0:
-      return D // self.armor.DP
-    return D // self.armor.DP + 1
-  
-  def getD_Chance(self):
-    D = self.getD()
-    if D % self.armor.DP==0:
-      return self.armor.DC
-    return (self.armor.DC*(self.getDodges()-1) + self.armor.DC * ((D % self.armor.DP) / self.armor.DP)) // self.getDodges()
- 
-  def move(self,dir):
-    """Change the position of a warrior in his excellent square"""
-    nx = self.pos[0]+dir[0]
-    ny = self.pos[1]+dir[1]
-    if nx >= 0 and nx <= 2 and ny >= 0 and ny <=2:
-      print('Dauras moving!')
-      if self.cell.isfree(nx,ny):
-        self.cell.free(self.pos[0],self.pos[1])
-        self.cell.add(self,nx,ny)
-
-  def flush_mods(self,type):
-    """Option to destroy all modifiers of selected type, ekzemple, to use them unufoje!"""
-    for mod in self.mods:
-      if mod['T']==type:
-         self.mods.remove(mod)
-   
-class Armor():
-  """Armor of a Warrior"""
-
-  def __init__(self):
-    self.DC = 80 # Defence Chance, DC
-    self.DP = 80 # Defence Potence, DP
-    self.AV = 0 # Armor Value, AV
-    self.EC = 100 # Evasion Chance
-    pass
-
-  def getEC(self):
-    """Evasion Chance - Chance to halve incoming damage after sucessfull block"""
-    return self.DP/self.DC * 100
-   
-class Weapon():
-  """Weapon of a Warrior"""
-
-  def __init__(self):
-    self.AC = 80 #Attack Chance, AC
-    self.AR = 80 #Attack Rate, AR
-    self.AP = 0 #Armor Piercing
-    self.AD = 0 #Additional Damage
-    self.PM = 1 #Power Modifier
-    pass
-
-  def getAM(self):
-    """Atack Modifier - Power Modifier of each sucesfull strike"""
-    return self.AR / self.AC
-
-class BQueue():
-  """Battle Queue of events"""
-
-  def __init__(self):
-    #print ('BQueue created!')
-    self.que = []
-    self.curt = 0
-    self.nque = queue.Queue()
-    for i in range(20):
-      self.que.append(queue.Queue())
-    self.que[0].put({'TYPE':'BATTLE_START','TTL':0})
-    self.que[0].put({'TYPE':'PLEN_TURN_START', 'TTL':-1})
-    for i in range(20):
-      self.que[0].put({'TYPE':'TURN_START', 'TTL':-1, 'NUM':i+1})
-      self.que[0].put({'TYPE':'TURN_END', 'TTL':-1, 'NUM':i+1})
-
-  
-  def add(self, kio, kien):
-    """Add event or turn to a que"""
-    if kien+self.curt >= 20:
-      self.nque.put([kio,kien+self.curt-20])
-    else:
-      end = self.que[kien].get()
-      self.que[kien].put(kio)
-      self.que[kien].put(end)
-
-  def getnext(self):
-    """return next event or event"""
-    while self.que[self.curt].qsize()==0:
-      self.curt += 1
-      if self.curt == 20:
-        self.curt = 0 
-        for i in range(self.nque.qsize()):
-          c = self.nque.get()
-          if c[1]>=20:
-            c[1] = c[1]-20
-            self.nque.put(c)
-          else:
-            self.que[c[1]].put(c[0])
-    event = self.que[self.curt].get()
-    if event['TTL'] < 0:
-      self.nque.put([event,self.curt])
-    if event['TTL'] > 0:
-      event['TTL'] -= 1
-      self.nque.put([event,self.curt])
-    return event
-
-class Cell():
-  """Cell sur batalkampo"""
-  
-  def __init__(self,x,y):
-    self.x = x
-    self.y = y
-    self.kamp = [[None,None,None],[None,None,None],[None,None,None]]
-    self.ckamp = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
-
-  def add(self, kio,x,y):
-    """adds a mistvieho in a cell"""
-    self.kamp[x][y] = kio
-    self.ckamp[x][y] = kio.Name[0]
-    kio.pos = [x,y]
-    kio.cell = self
-    
-  def draw(self,bord):
-    """return an array of strings, that can be drawed like symbold"""
-    ret = ['','','']
-    n = 0
-    if 'n' in bord:
-      ret.append('')
-      if 'w' in bord:
-        ret[0] = ret[0]+'╔'
-      ret[0] = ret[0]+'═══'
-      if 'e' in bord:
-        ret[0] =ret[0]+'╗'
-      n = 1
-    if 'w' in bord:
-      ret[0+n] += '║'
-      ret[1+n] += '║'
-      ret[2+n] += '║'
-    for i in range(3):
-      for j in range(3):
-        ret[j+n] = ret[j+n]+self.ckamp[i][j]
-    if 'e' in bord:
-      ret[0+n] += '║'
-      ret[1+n] += '║'
-      ret[2+n] += '║'
-    if 's' in bord:
-      ret.append('')
-      if 'w' in bord:
-        ret[3+n] = '╚'
-      ret[3+n] += '═══'
-      if 'e' in bord:
-        ret[3+n] += '╝'
-    return ret
-  
-  def isfree(self, x, y):
-    """Check whether cell is free or not"""
-    return self.kamp[x][y]==None
-  
-  def free(self, x, y):
-    """Make the cell free!"""
-    self.kamp[x][y] = None
-    self.ckamp[x][y] = ' '
- 
- 
 
 def atako(anto,ato):
   """Default attack of a mistvieho"""
@@ -345,7 +77,7 @@ def Agu(agaro):
         ato.mods.append({'TYPE':"R_MUL",'VAL':k_list[2-ato.pos[0]],'T':'B'})
         ato.mods.append({'TYPE':"D_MUL",'VAL':k_list[ato.pos[0]],'T':'B'})
       stat =  atako(anto,ato)
-      print (stat)
+      #print (stat)
       anto.flush_mods('B')
       bq.add({'TYPE':'GET_DAMAGE', 'TTL':0, 'ID':ago['ATO'].Name, 'SRC':ago['ANTO'].Name,'VAL':stat['ALL_DAMAGE']},0)
       ret = stat
@@ -363,46 +95,134 @@ def Agu(agaro):
 def turno():
   """turnkontrolilo"""
  
-  def getcel(dick,ink):
+  def getcel(listo,ink):
     k = 1
-    for key in dick.keys():
+    for key in listo:
       if ink == key.lower() or ink== str(k):
-        return (dick[key])
+        return (key)
       k+=1
-    return None
+    return listo[0]
 
-  def spam_char(nomo,cell):
-    heraro[nomo] = Char(randum=400)
+  def spam_char(nomo,cell,inr = False, pts = 400, kfc = [0.25,0.25,0.25,0.25],ranpos = False):
+    if inr:
+      heraro[nomo] = Char(randum=inr)
+    else:
+      heraro[nomo] = Char(kfc=kfc,pts=pts)
     heraro[nomo].Name = nomo
     herlist.append(nomo)
-    cell.add(heraro[nomo],1,1)
-
+    if ranpos:
+      cell.add(heraro[nomo],rand(0,2),rand(0,2))
+    else:
+      cell.add(heraro[nomo],1,1)
+    return heraro[nomo]
   
-  w_cell = Cell(0,0)
-  e_cell = Cell(1,0)
+  def new_game():
+    name = input('Ya name, yaoyopixqui?\n')
+    if name=='r' or name == 'random':
+      name = gen()
+    else:
+      addkey(name)
+    role = ''
+    ad = ''
+    dd = ''
+    while role not in ['1','2','3']:
+      #0.4, 0.5, 0.6
+      role = input("Select your battlerole:\n1)Punishmentizer\n2)Sentinel of Balance'\n3)Undestrictable\n")
+    while ad not in ['1','2','3']:
+      #0.4, 0.5, 0,6
+      ad = input("Select your attack doctrine:\n1)Almighty\n2)DoubleChaired\n3)Furious Storm\n")
+    while dd not in ['1','2','3']:
+      dd = input("Select your defense stratagem:\n1)Boar from an army\n2)Cunny Boar\n3)Cunny Evader\n")
+    kfc = [0,0,0,0]
+    kfc[3] = round((int(role)*0.1+0.3)* (int(dd)*0.1+0.3),2)
+    kfc[2] = round((int(role)*0.1+0.3)* (0.7 - int(dd)*0.1),2)
+    kfc[1] = round((0.7 - int(role)*0.1)* (int(ad)*0.1+0.3),2)
+    kfc[0] = round((0.7 - int(role)*0.1)* (0.7 - int(ad)*0.1),2)
+
+    cellaro.clear()
+    for i in range(3):
+      cellaro.append([Cell(i,0),Cell(i,1),Cell(i,2)])
+    herlist.clear()
+    heraro.clear()
+    nonlocal spiela,pts,mistpts,reslen,respts
+    pts = 400
+    mistpts = 100
+    reslen =0
+    respts = 0
+    # print(kfc)
+    spiela = spam_char(name,cellaro[1][1],kfc = kfc, pts = pts)
+    spiela.behavior = 'human'
+    spam_char(gen(),cellaro[1][0], inr = mistpts,ranpos = True)
+    spam_char(gen(),cellaro[0][1], inr = mistpts,ranpos = True)
+    spam_char(gen(),cellaro[1][2], inr = mistpts,ranpos = True)
+    spam_char(gen(),cellaro[2][1], inr = mistpts,ranpos = True)
+  
+    global bq
+    bq = BQueue()
+ 
+    for c in herlist:
+      bq.add({'TYPE':'HERO_TURN','TTL':0,'ID':c},0)
+  
+  cellaro = []
   herlist = []
   heraro = {}
-  spam_char('Mistarch',w_cell)
-  spam_char('Sterber',e_cell)
-  
-  global bq
-  bq = BQueue()
- 
-  for c in herlist:
-    bq.add({'TYPE':'HERO_TURN','TTL':0,'ID':c},0)
-  
+  spiela = Char()
+  pts = 0
+  mistpts = 0
+  reslen = 0
+  respts = 0
+  gamespeed = 10
+  new_game()
   ans = ''
   while ans!= 'q':
+    if not spiela.is_alive():
+      print ("You have been defeated like a piece of defeateness!")
+      print ("Your days on arena: %d. Your points of excellency: %d" % (reslen,respts // reslen))
+      ans = input("What to do?\n")
+      continue
+    enemies = False
+    for her in heraro.keys():
+      if heraro[her].behavior=='enemy' and heraro[her].is_alive():
+        enemies = True
+    if not enemies:
+      print("You Defeated Your enemies! Huei Tlatoani will try to sacrifice you anyway...")
+      print("You have damn time to collect your strength, or to enhchance your power. What to do?")
+      ans = input("1)Enhance Endurance\n2)Enhance Power\n3)Enhance Rate\n4)EnhanceDefence\n5Restire Half of Health\n")
+      while ans not in ['1','2','3','4','5']:
+        ans = input()
+      if int(ans) < 5:
+        dick = {'1':'E','2':'P','3':'R','4':'D'}
+        spiela.raisePar(dick[ans],gamespeed)
+      else:
+        heal = (spiela.getE() - spiela.getH()) // 2
+        print (heal,' dimage healed!')
+        spiela.H+=heal
+      reslen+=1
+      respts+=mistpts*4
+      mistpts+=gamespeed
+      spam_char(gen(),cellaro[1][0], inr = mistpts,ranpos = True)
+      spam_char(gen(),cellaro[0][1], inr = mistpts,ranpos = True)
+      spam_char(gen(),cellaro[1][2], inr = mistpts,ranpos = True)
+      spam_char(gen(),cellaro[2][1], inr = mistpts,ranpos = True)
     ev = bq.getnext()
-    print(ev)
+    #print(ev)
     if ev['TYPE']=='HERO_TURN':
       cur = heraro[ev['ID']]
+      if not cur.is_alive():
+        pass
+        #del heraro[cur]
       for mod in cur.mods:
         if mod['T']=='A':
           if mod['TTL']== 0:
             cur.mods.remove(mod)
           if mod['TTL']>0:
             mod['TTL']-=1
+      if cur.behavior!='human':
+        #Here AI lies like a mist of punishment!
+        Agu([{'TYPE':'ATTACK','ANTO':heraro[cur.Name],'ATO':spiela}])
+        print ("%s attacks %s!" % (cur.Name, spiela.Name))
+        bq.add({'TYPE':'HERO_TURN', 'TTL':0, 'ID':cur.Name},cur.getI())
+        continue 
       ret = True
       while ret:
         ans = input("Turno de " + cur.Name + "!What to do, mistvieh?\n")
@@ -419,9 +239,7 @@ def turno():
         if com[0] == 'a' or com[0] =='attack':
           cel = None
           if arg:
-            cel = getcel(heraro,args[0])
-          if cel==None:
-            cel = cur
+            cel = heraro[getcel(herlist,args[0])]
           Agu([{'TYPE':'ATTACK','ANTO':heraro[cur.Name],'ATO':cel}])
           print ("%s attacks %s!" % (cur.Name, cel.Name))
           bq.add({'TYPE':'HERO_TURN', 'TTL':0, 'ID':cur.Name},cur.getI())
@@ -436,21 +254,21 @@ def turno():
           bq.add({'TYPE':'HERO_TURN', 'TTL':0, 'ID':cur.Name},cur.getI()//2)
           ret = False
         elif com[0] == 'l' or com[0] == 'list':
-          print(arg)
+          #print(arg)
           if arg:
-            her = getcel(heraro,args[0])
-            print ("%s:\nHealth: %d/%d\nPower: %d\nAttack Rate: %d\nDefense Rate: %d\n" % (her.Name,her.getH(),her.getE(),her.getP(),her.getR(),her.getD()))
+            her = heraro[getcel(herlist,args[0])]
+            print ("%s:\nHealth: %d/%d\nPower: %d\nAttack Rate: %d + %f\nDefense Rate: %d + %f\n" % (her.Name,her.getH(),her.getE(),her.getP(),her.getR(),her.rR,her.getD(),her.rD))
           else:
-            wcell = w_cell.draw(['n','w','s'])
-            ecell = e_cell.draw(['n','e','s'])
-            print(wcell[0]+'╦'+ecell[0])
-            print(wcell[1]+'║'+ecell[1])
-            print(wcell[2]+'║'+ecell[2])
-            print(wcell[3]+'║'+ecell[3])
-            print(wcell[4]+'╩'+ecell[4])
+            space = "---"
+            print ("%s+%s+%s" % (space, space, space))
+            for cell_row in cellaro:
+              print ("%s|%s|%s" % (cell_row[0].draw()[0],cell_row[1].draw()[0],cell_row[2].draw()[0]))
+              print ("%s|%s|%s" % (cell_row[0].draw()[1],cell_row[1].draw()[1],cell_row[2].draw()[1]))
+              print ("%s|%s|%s" % (cell_row[0].draw()[2],cell_row[1].draw()[2],cell_row[2].draw()[2]))
+              print ("%s+%s+%s" % (space, space, space))
             i = 1
-            for key in heraro.keys():
-              print ("%d) %s" % (i,key))
+            for key in herlist:
+              print ("%d) %s (%d,%d)" % (i,key,heraro[key].cell.x,heraro[key].cell.y))
               i+=1
         elif com[0] =='m' or com[0] == 'move':
           if arg:
@@ -477,6 +295,12 @@ def turno():
     elif ev['TYPE'] == 'GET_DAMAGE':
       dmg = Agu([{'TYPE':'SUFFER','CEL':heraro[ev['ID']],'SRC':heraro[ev['SRC']],'VAL':ev['VAL']}])
       print ("%d damage dealed to %s by %s!" % (dmg,ev['ID'],ev['SRC']))
+    
+    elif ev['TYPE'] == 'TURN_END':
+      for h in herlist:
+        if not heraro[h].is_alive() and not heraro[h].is_dead():
+          print ('%s dies!' % heraro[h].Name)
+          heraro[h].die()
 
 
 if __name__ == '__main__':
